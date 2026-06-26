@@ -59,7 +59,7 @@ All code requires the corresponding YAML files in `configs/`. The paths are as f
 configs/
   paths.yaml              Local path configuration
   model_config.yaml       Model and validation settings
-data/                     Place your own datasets.
+data/
   README.md               Explains restricted-data placement, no data included
 src/
   DataPreprocess/
