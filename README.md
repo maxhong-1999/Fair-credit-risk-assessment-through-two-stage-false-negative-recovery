@@ -26,14 +26,14 @@ This framework addresses a limitation of existing credit scoring research by sep
 
 The window-based approach has evolved from simple time-series segmentation to a core analytical structure for capturing temporal and contextual variations. However, using windows does not guarantee that all temporal characteristics are equally represented, as structural imbalances from differences in observation frequency and information volume persist.
 
-<img width="5760" height="3240" alt="image" src="https://github.com/user-attachments/assets/c91af25d-0b5f-46c5-a084-8016d252d100" />
+<img width="100%" alt="image" src="https://github.com/user-attachments/assets/c91af25d-0b5f-46c5-a084-8016d252d100" />
 <p align='center'>Figure 1. Data distribution in traditional window</p>
 
 Figure 1 illustrates how windowing includes or excludes samples. Figure 1(a) shows a snapshot window, while Figure 1(b) shows a rolling window. Blue areas represent sections included in the model input (Window), while orange areas indicate excluded sections (Out of Window). Each line represents the actual observation sequence of an individual data record: black segments denote observations included within the window and red segments indicate excluded portions. Even with identical window time spans, substantial differences remain in the number of included observations and information density across individuals. These differences introduce structural imbalances into the reliability and comparability of the summary statistics computed within the window.
 
 </br>
 
-<img width="5760" height="3240" alt="image" src="https://github.com/user-attachments/assets/ead598c9-fdee-4f39-a226-202f6136eddd" />
+<img width="100%" alt="image" src="https://github.com/user-attachments/assets/ead598c9-fdee-4f39-a226-202f6136eddd" />
 <p align='center'>Figure 2. Realignment process of personalised parallel windows</p>
 
 As discussed earlier, conventional time-based window settings often produce data imbalance because the individual-level observation periods available vary. To address this, this study proposes the personalised parallel window technique. As illustrated in Figure 2, each individual’s most recent observation point was set as the reference point, and a fixed preceding period defined the start of the observation window, establishing an identical individual-specific window. Records for which a consistent-length observed window could not be obtained within an individual’s available data were excluded to maintain informational balance across the dataset.
@@ -42,7 +42,7 @@ As discussed earlier, conventional time-based window settings often produce data
 
 ## Method of Our Research
 
-<img width="5760" height="1620" alt="image" src="https://github.com/user-attachments/assets/6072dd62-4609-46a3-b59e-ab7ccc38614c" />
+<img width="100%" alt="image" src="https://github.com/user-attachments/assets/6072dd62-4609-46a3-b59e-ab7ccc38614c" />
 <p align='center'>Figure 3. FN recovery framework</p>
 
 Figure 3 illustrates the overall structure of the framework applying the algorithms. This study designed a two-stage risk management framework to improve the precision of post-hoc FN re-evaluation. In Stage 1, a general model (G-model) was trained using the entire borrower dataset. In Stage 2, a specialised model (P-model) trained on policy loan borrower data was applied to the FNs identified by the G-model. This structure reflects the characteristics of policy loan borrowers—the primary targets of policy support—while re-evaluating all FN cases to recover previously overlooked high-risk cases.</br>
