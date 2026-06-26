@@ -1,0 +1,13 @@
+# These examples are relative to the audit folder when commands are run from
+# the repository root. Keep restricted data outside this folder.
+
+raw_customer_csv: "../restricted_data/YOUR_RAW_DATA.csv"
+raw_account_csv: "../restricted_data/YOUR_RAW_DATA.csv"
+
+merged_csv: "../restricted_work/intermediate/YOUR_SYNTHESIS_DATA.csv"
+cohort_account_csv: "../restricted_work/intermediate/YOUR_SYNTHESIS_COHORT_DATA.csv"
+final_borrower_features_csv: "../restricted_work/intermediate/YOUR_FINAL_DATA.csv"
+
+selected_features_dir: "../restricted_outputs/feature_selection"
+model_outputs_dir: "../restricted_outputs/models"
+audit_outputs_dir: "../restricted_outputs/audit"
