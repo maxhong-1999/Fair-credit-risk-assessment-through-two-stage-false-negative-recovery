@@ -1,0 +1,38 @@
+random_state: 42
+n_splits: 5
+
+# data window split date
+reference_pairs:
+  - [201512, 201612]
+  - [201612, 201712]
+  - [201712, 201812]
+
+target_col: "DLQ_ANY_YN"
+id_col: "KCB_DEID1_ENCRYPT"
+policy_loan_indicator_col: "LN_AMT_YN"
+
+feature_selection:
+  correlation_abs_threshold: 0.70
+  iv_min_threshold: 0.10
+  stepwise_threshold_in: 0.01
+  stepwise_threshold_out: 0.05
+
+hyperparameter_search:
+  tabular_randomized_search_iter: 50
+  deep_randomized_search_iter: 20
+  primary_metric: "roc_auc"
+  secondary_metrics:
+    - "pr_auc"
+    - "f1"
+
+two_stage:
+  threshold_method: "youden_j"
+  calibration: "platt"
+
+proxy_loss:
+  baseline_lgd: 0.60
+  sensitivity_lgd:
+    - 0.40
+    - 0.50
+    - 0.60
+    - 0.70
