@@ -59,10 +59,21 @@ All code requires the corresponding YAML files in `configs/`. The paths are as f
 configs/
   paths.yaml              Local path configuration
   model_config.yaml       Model and validation settings
-data/
+data/                     Place your own datasets.
   README.md               Explains restricted-data placement, no data included
 src/
-  codes.py
+  DataPreprocess/
+    data_preprocess.py
+    cohort_filtering.py
+  FeatureEngineering/
+    feature_engineering.py
+    feature_selection.py
+  Experiments/
+    vanilla_model.py
+    hyper_parameter_model.py
+    two_stage_evaluation.py
+  Discussion/
+    proxy_loss.py
 ```
 
 ---
