@@ -170,11 +170,11 @@ The data used in this study were provided by the KCB under a research agreement 
 
 ### Training and Reproducibility
 
-- [Data Preprocess]()
-- [Feature Engineering]()
-- [Vanilla Model Experiment]()
-- [Hyper-Parameter Tuning & Model Experiment]()
-- [Two Stage Evaluation]()
+- [Data Preprocess](src/DataPreprocess)
+- [Feature Engineering](src/FeatureEngineering)
+- [Vanilla Model Experiment](src/Experiments/vanilla_model.py)
+- [Hyper-Parameter Tuning & Model Experiment](src/Experiments/hyper_parameter_model.py)
+- [Two Stage Evaluation](src/Experiments/two_stage_evaluation.py)
 
 
 ### Model Screening
@@ -236,7 +236,7 @@ where:
 - `EAD_i` is the available loan-exposure proxy
 - `LGD` is a simplifying assumption
 
-The Reproducibility Code is: [Proxy_Loss]()
+The Reproducibility Code is: [Proxy_Loss](src/Discussion/proxy_loss.py)
 
 ---
 
