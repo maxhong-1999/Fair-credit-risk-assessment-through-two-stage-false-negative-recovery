@@ -1,4 +1,4 @@
-# Fair-credit-risk-assessment-through-two-stage-false-negative-recovery
+# Credit risk assessment through two-stage false negative recovery: balancing credit access and stability
 
 This repository is designed to ensure the reproducibility of the article. <br />
 **Note**: This study was conducted with KCB (Korea Credit Bureau) Data.
@@ -7,7 +7,7 @@ This repository is designed to ensure the reproducibility of the article. <br />
 
 ## Abstract
 
-This study addresses a practical tension in financial inclusion: how to preserve access while identifying high-risk borrowers who were initially overlooked by conventional credit scoring. It proposes a two-stage credit risk assessment framework in which false negatives (FN) are defined as high-risk borrowers misclassified as low risk. In this study, fairness is interpreted in a limited operational sense as data-level comparability across borrowers, rather than as formal algorithmic fairness across protected groups. Using a large-scale dataset from the Korea Credit Bureau (KCB), the analysis reconstructs credit records at the person level and applies a personalised parallel window to align observation periods before model training. The framework then combines broad first-stage risk screening with a focused post-hoc reassessment of previously overlooked cases using policy loan borrower data as a reference domain. Under this retrospective design, Stage 1 FNs declined from 469 to 321, and a proxy-based retrospective simulation within the Stage 1 FN subset indicated a 37.0% relative reduction in proxy-based loss estimates. These findings suggest that structured data alignment and post-hoc FN recovery can support model auditing, policy recalibration, and more consistent credit assessment, while not constituting evidence of realised institutional savings or formal group fairness.
+This study addresses a practical tension in financial inclusion: how to preserve access while identifying high-risk borrowers who were initially overlooked by conventional credit scoring. It proposes a two-stage credit risk assessment framework in which false negatives (FN) are defined as high-risk borrowers misclassified as low risk. In this study, fairness is interpreted in a limited operational sense as data-level comparability across borrowers, rather than as formal algorithmic fairness across protected groups. Using a large-scale dataset from the Korea Credit Bureau (KCB), the analysis reconstructs credit records at the person level and applies a personalised parallel window to align observation periods before model training. The framework then combines broad first-stage risk screening with a focused post-hoc reassessment of previously overlooked cases using policy loan borrower data as a reference domain. Under this primary retrospective audit design, Stage 1 FNs declined from 469 to 321 (31.56%), and a proxy-based retrospective simulation within the Stage 1 FN subset indicated a 37.0% relative reduction in missed-risk exposure proxy. Additional fold-separated validation revealed a trade-off between FN recovery and false positives (FPs) when Stage 2 was applied beyond the retrospectively identified FN subset. These findings suggest that structured data alignment and post-hoc FN recovery can support model auditing, policy recalibration, and more consistent credit assessment, while not constituting evidence of realised institutional savings or formal group fairness.
 
 ---
 
@@ -16,9 +16,9 @@ This study addresses a practical tension in financial inclusion: how to preserve
 This study uses policy loan borrower data as a policy-relevant complementary reference domain for post-hoc FN reassessment. This use does not assume equivalence between policy loan borrowers and FN cases; rather, it examines whether risk patterns observed in a vulnerable-borrower domain provide additional signals for reassessing overlooked high-risk borrowers.
 
 - Stage 1 (G-model): A generalised prediction model applied to the entire borrower population to screen the overall credit risk structure.
-- Stage 2 (P-model): A refined evaluation model that uses policy loan borrower data to re-evaluate cases later identified as false negatives based on realised outcomes.
+- Stage 2 (P-model): A refined evaluation model that uses policy loan borrower data to re-evaluate cases identified retrospectively as FNs based on observed delinquency labels in the primary audit.
   
-This framework addresses a limitation of existing credit scoring research by separating broad risk screening from focused post-hoc reassessment. Stage 1 maintains coverage and efficiency across the overall borrower population, while Stage 2 provides a complementary reassessment of previously overlooked high-risk cases. Managing FNs as a distinct risk segment provides a structured analytical approach to examining overlooked risks and their implications for institutional loss, with the policy loan borrower domain serving as complementary information rather than a direct representation of FN cases.
+This framework addresses a limitation of existing credit scoring research by separating broad risk screening from focused post-hoc reassessment. Stage 1 maintains coverage and efficiency across the overall borrower population, while Stage 2 provides a complementary reassessment of previously overlooked high-risk cases. Managing FNs as a distinct risk segment provides a structured analytical approach to examining overlooked risks and their implications for institutional loss, with the policy loan borrower domain serving as complementary information rather than a direct representation of FN cases.A separate fold-separated validation extends Stage 2 to Stage 1 predicted-negative borrowers without using observed delinquency labels for case selection.
 
 ---
 
@@ -36,7 +36,7 @@ Figure 1 illustrates how windowing includes or excludes samples. Figure 1(a) sho
 <img width="100%" alt="image" src="https://github.com/user-attachments/assets/ead598c9-fdee-4f39-a226-202f6136eddd" />
 <p align='center'>Figure 2. Realignment process of personalised parallel windows</p>
 
-As discussed earlier, conventional time-based window settings often produce data imbalance because the individual-level observation periods available vary. To address this, this study proposes the personalised parallel window technique. As illustrated in Figure 2, each individual’s most recent observation point was set as the reference point, and a fixed preceding period defined the start of the observation window, establishing an identical individual-specific window. Records for which a consistent-length observed window could not be obtained within an individual’s available data were excluded to maintain informational balance across the dataset.
+As discussed earlier, conventional time-based window settings often produce data imbalance because the individual-level observation periods available vary. To address this, this study proposes the personalised parallel window technique. In the implemented analysis, each borrower's most recent eligible pair of consecutive December reference points at a 12-month interval (2015–2016, 2016–2017, or 2017–2018) was retained. All account records observed at these two reference points were aggregated into person-level features. Borrowers without a complete eligible pair were excluded.
 
 ---
 
@@ -45,7 +45,7 @@ As discussed earlier, conventional time-based window settings often produce data
 <img width="100%" alt="image" src="https://github.com/user-attachments/assets/6072dd62-4609-46a3-b59e-ab7ccc38614c" />
 <p align='center'>Figure 3. FN recovery framework</p>
 
-Figure 3 illustrates the overall structure of the framework applying the algorithms. This study designed a two-stage risk management framework to improve the precision of post-hoc FN re-evaluation. In Stage 1, a general model (G-model) was trained using the entire borrower dataset. In Stage 2, a specialised model (P-model) trained on policy loan borrower data was applied to the FNs identified by the G-model. This structure reflects the characteristics of policy loan borrowers—the primary targets of policy support—while re-evaluating all FN cases to recover previously overlooked high-risk cases.</br>
+Figure 3 illustrates the overall structure of the framework applying the algorithms. This study designed a two-stage risk management framework to improve the precision of post-hoc FN re-evaluation. In Stage 1, a general model (G-model) was trained using the entire borrower dataset. In Stage 2, a specialised model (P-model) trained on policy loan borrower data was applied to the FNs identified retrospectively through Stage 1 predictions and observed delinquency labels. This structure reflects the characteristics of policy loan borrowers—the primary targets of policy support—while re-evaluating all FN cases to recover previously overlooked high-risk cases.</br>
 
 ---
 
@@ -200,7 +200,12 @@ The repository provides baseline training and decoding scripts for:
 - Search design:
   - classical ML randomized search: 50 iterations
   - deep learning randomized search: 20 iterations with early stopping
- 
+
+---
+### Additional Fold-Separated Validation
+
+In addition to the primary retrospective FN-only audit, a separate fold-separated validation was conducted. Within each outer fold, Stage 1 and Stage 2 thresholds and Stage 2 Platt calibration were determined using training data only and then applied to held-out borrowers. Stage 2 reassessed Stage 1 predicted-negative borrowers without using observed delinquency labels for case selection. The evaluation retained fixed feature sets and model configurations, and feature selection was not nested within the outer folds. Detailed results are reported in Appendix C of the Supplementary Information.
+
 ---
 
 ### Intended Run Order
@@ -221,9 +226,9 @@ python src/Discussion/proxy_loss.py --config configs/paths.yaml
 ---
 
 ## Discussion
-**Proxy Loss**
+**Missed-Risk Exposure Proxy**
 
-To examine the potential loss implications of FN recovery, an additional retrospective simulation was conducted using a simplified proxy-based loss formulation.
+To examine the potential exposure implications of FN recovery, an additional retrospective simulation was conducted using a simplified missed-risk exposure proxy formulation.This calculation concerns the primary retrospective FN subset and should not be interpreted as realised accounting losses or as a loss-reduction estimate from the additional fold-separated validation.
 Proxy loss formula:
 
 ```
