@@ -18,7 +18,7 @@ This study uses policy loan borrower data as a policy-relevant complementary ref
 - Stage 1 (G-model): A generalised prediction model applied to the entire borrower population to screen the overall credit risk structure.
 - Stage 2 (P-model): A refined evaluation model that uses policy loan borrower data to re-evaluate cases identified retrospectively as FNs based on observed delinquency labels in the primary audit.
   
-This framework addresses a limitation of existing credit scoring research by separating broad risk screening from focused post-hoc reassessment. Stage 1 maintains coverage and efficiency across the overall borrower population, while Stage 2 provides a complementary reassessment of previously overlooked high-risk cases. Managing FNs as a distinct risk segment provides a structured analytical approach to examining overlooked risks and their implications for institutional loss, with the policy loan borrower domain serving as complementary information rather than a direct representation of FN cases.A separate fold-separated validation extends Stage 2 to Stage 1 predicted-negative borrowers without using observed delinquency labels for case selection.
+This framework addresses a limitation of existing credit scoring research by separating broad risk screening from focused post-hoc reassessment. Stage 1 maintains coverage and efficiency across the overall borrower population, while Stage 2 provides a complementary reassessment of previously overlooked high-risk cases. Managing FNs as a distinct risk segment provides a structured analytical approach to examining overlooked risks and their implications for institutional risk exposure, with the policy loan borrower domain serving as complementary information rather than a direct representation of FN cases. A separate fold-separated validation extends Stage 2 to Stage 1 predicted-negative borrowers without using observed delinquency labels for case selection.
 
 ---
 
@@ -45,7 +45,7 @@ As discussed earlier, conventional time-based window settings often produce data
 <img width="100%" alt="image" src="https://github.com/user-attachments/assets/6072dd62-4609-46a3-b59e-ab7ccc38614c" />
 <p align='center'>Figure 3. FN recovery framework</p>
 
-Figure 3 illustrates the overall structure of the framework applying the algorithms. This study designed a two-stage risk management framework to improve the precision of post-hoc FN re-evaluation. In Stage 1, a general model (G-model) was trained using the entire borrower dataset. In Stage 2, a specialised model (P-model) trained on policy loan borrower data was applied to the FNs identified retrospectively through Stage 1 predictions and observed delinquency labels. This structure reflects the characteristics of policy loan borrowers—the primary targets of policy support—while re-evaluating all FN cases to recover previously overlooked high-risk cases.</br>
+Figure 3 illustrates the overall structure of the framework applying the algorithms. This study designed a two-stage risk management framework to improve the precision of post-hoc FN re-evaluation. In Stage 1, a general model (G-model) was trained using the entire borrower dataset. In Stage 2, a specialised model (P-model) trained on policy loan borrower data was applied to the FNs identified retrospectively through Stage 1 predictions and observed delinquency labels. This structure reflects the characteristics of policy loan borrowers—the primary targets of policy support—while re-evaluating all FN cases to recover previously overlooked high-risk cases. This figure illustrates the primary retrospective FN-only audit, whereas the separate fold-separated validation extends reassessment to Stage 1 predicted-negative borrowers.</br>
 
 ---
 
@@ -175,6 +175,7 @@ The data used in this study were provided by the KCB under a research agreement 
 - [Vanilla Model Experiment](src/Experiments/vanilla_model.py)
 - [Hyper-Parameter Tuning & Model Experiment](src/Experiments/hyper_parameter_model.py)
 - [Two Stage Evaluation](src/Experiments/two_stage_evaluation.py)
+- [Additional fold-separated validation (Appendix C)](src/Experiments/additional_fold_validation.py)
 
 
 ### Model Screening
@@ -204,7 +205,7 @@ The repository provides baseline training and decoding scripts for:
 ---
 ### Additional Fold-Separated Validation
 
-In addition to the primary retrospective FN-only audit, a separate fold-separated validation was conducted. Within each outer fold, Stage 1 and Stage 2 thresholds and Stage 2 Platt calibration were determined using training data only and then applied to held-out borrowers. Stage 2 reassessed Stage 1 predicted-negative borrowers without using observed delinquency labels for case selection. The evaluation retained fixed feature sets and model configurations, and feature selection was not nested within the outer folds. Detailed results are reported in Appendix C of the Supplementary Information.
+In addition to the primary retrospective FN-only audit, a separate fold-separated validation was conducted. Within each outer fold, Stage 1 and Stage 2 thresholds and Stage 2 Platt calibration were determined using training data only and then applied to held-out borrowers. Stage 2 reassessed Stage 1 predicted-negative borrowers without using observed delinquency labels for case selection. The evaluation retained fixed feature sets and model configurations, and feature selection was not nested within the outer folds. The validation reports full Stage 1 predicted-negative reassessment (Table C1) and capacity-constrained reassessment of the top 5%, 10%, and 20% ranked by Stage 1 risk scores (Table C2). Detailed results are reported in Appendix C of the Supplementary Information.
 
 ---
 
@@ -228,11 +229,11 @@ python src/Discussion/proxy_loss.py --config configs/paths.yaml
 ## Discussion
 **Missed-Risk Exposure Proxy**
 
-To examine the potential exposure implications of FN recovery, an additional retrospective simulation was conducted using a simplified missed-risk exposure proxy formulation.This calculation concerns the primary retrospective FN subset and should not be interpreted as realised accounting losses or as a loss-reduction estimate from the additional fold-separated validation.
-Proxy loss formula:
+To examine the potential exposure implications of FN recovery, an additional retrospective simulation was conducted using a simplified missed-risk exposure proxy formulation. This calculation concerns the primary retrospective FN subset and should not be interpreted as realised accounting losses or as a loss-reduction estimate from the additional fold-separated validation.
+Missed-risk exposure proxy formula:
 
 ```
-Proxy Loss = sum_i D_i * EAD_i * LGD
+Missed-risk exposure proxy = sum_i D_i * EAD_i * LGD
 ```
 
 where:
