@@ -53,7 +53,7 @@ Figure 3 illustrates the overall structure of the framework applying the algorit
 
 ### Repository Structure
 
-All code requires the corresponding YAML files in `configs/`. The paths are as follows:
+The original-paper code uses the corresponding YAML files in `configs/`. The current Appendix C has a separate frozen JSON protocol and instructions in [`appendix_c/`](appendix_c/README.md). The paths are as follows:
 
 ```
 configs/
@@ -61,6 +61,11 @@ configs/
   model_config.yaml       Model and validation settings
 data/
   README.md               Explains restricted-data placement, no data included
+appendix_c/
+  README.md               Current harmonized vanilla/tuned G/P analysis
+  run_2x2.py              Portable runner; aggregate outputs only
+  locked_protocol.json    Frozen current Appendix C specification
+  verify_aggregates.py     Check local aggregate results without model fitting
 src/
   DataPreprocess/
     data_preprocess.py
@@ -175,7 +180,7 @@ The data used in this study were provided by the KCB under a research agreement 
 - [Vanilla Model Experiment](src/Experiments/vanilla_model.py)
 - [Hyper-Parameter Tuning & Model Experiment](src/Experiments/hyper_parameter_model.py)
 - [Two Stage Evaluation](src/Experiments/two_stage_evaluation.py)
-- [Additional fold-separated validation (Appendix C)](src/Experiments/additional_fold_validation.py)
+- [Current Appendix C: harmonized vanilla/tuned G/P experiment](appendix_c/README.md)
 
 
 ### Model Screening
@@ -203,9 +208,11 @@ The repository provides baseline training and decoding scripts for:
   - deep learning randomized search: 20 iterations with early stopping
 
 ---
-### Additional Fold-Separated Validation
+### Current Appendix C: Harmonized G/P Configurations
 
-In addition to the primary retrospective FN-only audit, a separate fold-separated validation was conducted. Within each outer fold, Stage 1 and Stage 2 thresholds and Stage 2 Platt calibration were determined using training data only and then applied to held-out borrowers. Stage 2 reassessed Stage 1 predicted-negative borrowers without using observed delinquency labels for case selection. The evaluation retained fixed feature sets and model configurations, and feature selection was not nested within the outer folds. The validation reports full Stage 1 predicted-negative reassessment (Table C1) and capacity-constrained reassessment of the top 5%, 10%, and 20% ranked by Stage 1 risk scores (Table C2). Detailed results are reported in Appendix C of the Supplementary Information.
+The current Appendix C evaluates four fixed XGBoost G/P combinations: vanilla G + vanilla P, vanilla G + tuned P, tuned G + vanilla P, and tuned G + tuned P, with standalone G controls. Each P variant reassesses all predicted negatives of its G baseline, and every G predicted positive is retained. Calibration and native thresholds use training-only inner out-of-fold scores. Figure C1 presents the vanilla G family; Figure C2 presents the tuned G family. Feature selection and tuning were preselected and are not fully nested.
+
+The separate Table R1 benchmark compares vanilla G + tuned P with standalone tuned G at the same final flagged count in every held-out fold. This is retrospective batch ranking; it does not match false-positive rates. See [`appendix_c/README.md`](appendix_c/README.md) for the input schema, exact dependencies, local aggregate-verification commands, provenance and reproducibility limits. This is a code-only release without empirical result tables. Full private-data replay of the portable runner was not performed during code preparation. The original FN-only audit and other original-paper code are preserved.
 
 ---
 

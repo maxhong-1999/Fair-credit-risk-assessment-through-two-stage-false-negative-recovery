@@ -1,0 +1,7 @@
+# Code-only Appendix C text normalization.
+/.gitattributes text eol=lf
+/.gitignore text eol=lf
+/appendix_c/*.py text eol=lf
+/appendix_c/*.json text eol=lf
+/appendix_c/*.md text eol=lf
+/appendix_c/*.txt text eol=lf
