@@ -1,0 +1,3 @@
+# Separate rendering environment: Python 3.12.14. No model fitting is needed.
+matplotlib==3.11.1
+numpy==2.3.5

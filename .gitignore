@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+/appendix_c/synthetic-*/
+/appendix_c/aggregate-test-*/
+/appendix_c/local_results/
+/appendix_c/restricted_data/
+/appendix_c/results/

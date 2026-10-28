@@ -1,0 +1,40 @@
+{
+  "source_experiment": "kcb2_harmonized_2x2_20261025",
+  "source_code": {
+    "file": "run_2x2.py",
+    "sha256": "dc3936030bd3f66cd645fa0b7658fa49908d3ea8075b1104df8227195e88ab94"
+  },
+  "source_protocol": {
+    "file": "locked_protocol.json",
+    "sha256": "141c85f70b9d2141c3a08dfdc9105323e1ec70e00b96e3d706fb44e37bea4efe"
+  },
+  "figure_source": {
+    "file": "build_annotated_revisions.py",
+    "sha256": "b1fd4dd8b1b6957c889d45c4dd0cd1384f518e982084e5bdfb97f0d87f00e4c9",
+    "renderer": "Python 3.12.14 / matplotlib 3.11.1",
+    "mapping": {
+      "C1": [
+        "Gv",
+        "Gv_Pv",
+        "Gv_Pt"
+      ],
+      "C2": [
+        "Gt",
+        "Gt_Pv",
+        "Gt_Pt"
+      ]
+    }
+  },
+  "validation_scope": "Source-code/protocol provenance, synthetic tests and local aggregate consistency. Empirical result tables and cohort counts are excluded from this code-only release. No private-data numerical replay of the portable runner.",
+  "excluded": [
+    "borrower data",
+    "row-level predictions",
+    "trained models",
+    "private logs",
+    "manuscript drafts",
+    "personal paths",
+    "credentials",
+    "empirical aggregate result tables",
+    "cohort counts"
+  ]
+}
